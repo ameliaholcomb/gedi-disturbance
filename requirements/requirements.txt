@@ -1,0 +1,13 @@
+apache_sedona==1.2.0
+geopandas==0.11.0
+numba==0.55.2
+numpy==1.22.2
+pandas==1.4.3
+pyproj==3.3.1
+pyspark==3.3.0
+python-dotenv==1.0.0
+rasterio==1.3.0
+rioxarray==0.11.1
+setuptools==63.2.0
+Shapely==1.8.2
+xarray==2023.7.0
