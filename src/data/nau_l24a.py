@@ -74,6 +74,8 @@ new_cols = [
     "pai_90",
     "pai_95",
     "pai_100",
+    "elev_lm_a0",
+    "num_modes_a0",
     "outlier_umd",
 ]
 old_cols = [
@@ -128,7 +130,7 @@ def run_main():
     spark.sql(query).filter("t1_outlier_umd == 0").filter(
         "t2_outlier_umd == 0"
     ).write.mode("overwrite").format("geoparquet").save(
-        "/maps/forecol/results/gedi_neighbors_nau_l24a"
+        "/maps/forecol/results/gedi_neighbors_nau_more_cols"
     )
 
 
