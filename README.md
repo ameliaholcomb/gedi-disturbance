@@ -10,14 +10,15 @@
 ## Getting started
 
 This repository contains the code required to reproduce the results and figures
-for the paper "Measuring small-scale tropical forest disturbance with GEDI."
+for the paper "Repeat GEDI footprints enable the measurement of moderate-scale tropical forest disturbance."
 
 ### Data sources
 1. GEDI Level 2A, Level 2B, and Level 4A.
 
     These data products are available from the ORNL and LP DAACs. The codebase
     assumes that this data is already downloaded and the individual shots are 
-    loaded into a PostGIS database. Alternatively, if given an existing
+    loaded into a PostGIS database. Please contact the corresponding authors
+    if assistance is needed with this step. Alternatively, if given an existing
     dataset of coincident shots, the later pipelines can be run without PostGIS
     by supplying the argument <p>`--shots_dir=/path/to/coincident/shots/dataset`</p>
 
