@@ -29,7 +29,7 @@ but the version used for the paper is tagged with \<publication-freeze\>
     These rasters are available from https://forobs.jrc.ec.europa.eu/ and on
     Google Earth Engine. The codebase assumes that this data is already downloaded
     and saved as aligned raster files. File naming conventions are enforced in
-    data/jrc_intensity_parser.py and data/jrc_parser.py; these conventions match
+    `data/jrc_intensity_parser.py` and `data/jrc_parser.py`; these conventions match
     the file naming if the Annual Forest Change maps are downloaded from the
     JRC website and the intensity metrics are downloaded from Google Earth Engine.
     However, you may need to adjust these regular expressions to match your files.
@@ -40,7 +40,7 @@ but the version used for the paper is tagged with \<publication-freeze\>
     They must be preprocessed to reformat the data and remove plantation forests
     according to the basemap available from 
     https://console.cloud.google.com/storage/browser/earthenginepartners-hansen/S2alert/forestMask.
-    This step can be performed using the script in src/data/glad_preprocessor.py.
+    This step can be performed using the script in `data/glad_preprocessor.py`.
 
 ### Setup
 In addition to setting up the data as described above, set up the environment as follows:
@@ -77,7 +77,7 @@ the paper.
 
 1. find_coincident_shots.py: Find coincident shot pairs (< 40 m apart) for a given region.
 2. jrc_degradation_pipeline.py: Identify coincident shot pairs that overlap with disturbance events in the AFC dataset.
-3. radd_degradation_pipeline.py: Identify coincident shot pairs that overlap with disturbance events in the RADD dataset.
+3. glad_degradation_pipeline.py: Identify coincident shot pairs that overlap with disturbance events in the GLAD dataset.
 4. jrc_disturb_intensity_pipeline.py: For a set of AFC-detected disturbance events, get the corresponding disturbance intensity.
 
 Additionally, it includes a pipeline for identifying coincident shot pairs that fall in "intact" forest. This is only used in the supplementary analysis (not the main paper).
