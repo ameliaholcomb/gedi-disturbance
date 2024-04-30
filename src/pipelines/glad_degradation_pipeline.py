@@ -1,19 +1,20 @@
 import argparse
+from functools import partial
 import os
 import pathlib
 
 from src.data import spark_postgis
-from src.data import radd_parser
+from src.data import glad_parser
 from src.processing import degradation_overlap
 
 
-def run_main(shots_dir=None, out_dir=None):
+def run_main(shots_dir=None, out_dir=None, buffer_days=30):
     spark = spark_postgis.get_spark()
     shots_df = degradation_overlap.get_shots_df(spark, shots_dir)
-    shots_df = radd_parser.convert_shot_dates(shots_df)
+    shots_df = glad_parser.convert_shot_dates(shots_df)
     shots_df.createOrReplaceTempView("gedi_shots")
 
-    degrade_shards_df = spark.createDataFrame(radd_parser.get_sharding_geoms())
+    degrade_shards_df = spark.createDataFrame(glad_parser.get_sharding_geoms())
     degrade_shards_df.createOrReplaceTempView("degrade_shards")
 
     shots_df = spark.sql(degradation_overlap.shards_join_query)
@@ -22,9 +23,12 @@ def run_main(shots_dir=None, out_dir=None):
     shots_df = degradation_overlap.run_degradation_overlay(
         spark=spark,
         shots_df=shots_df,
-        in_schema=radd_parser.in_schema,
-        out_schema=radd_parser.out_schema,
-        degradation_overlay_fn=radd_parser.get_degradation_event_dates_for_shot_pair,
+        in_schema=glad_parser.in_schema,
+        out_schema=glad_parser.out_schema,
+        degradation_overlay_fn=partial(
+            glad_parser.get_degradation_event_dates_for_shot_pair,
+            buffer_days,
+        ),
     )
 
     shots_df.filter(
@@ -34,7 +38,7 @@ def run_main(shots_dir=None, out_dir=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Find GEDI shot pairs with interceding degradation, as detected by the RADD product."
+        description="Find GEDI shot pairs with interceding degradation, as detected by the GLAD product."
     )
     parser.add_argument(
         "--shots_dir",
@@ -49,6 +53,17 @@ if __name__ == "__main__":
         help=("Output directory."),
         type=str,
         required=True,
+    )
+    parser.add_argument(
+        "--buffer_days",
+        "-b",
+        help=(
+            "Number of days to buffer a disturbance event"
+            "to allow for late detection in the GLAD product."
+        ),
+        type=int,
+        required=False,
+        default=30,
     )
     parser.add_argument(
         "--overwrite",
@@ -77,4 +92,5 @@ if __name__ == "__main__":
     run_main(
         shots_dir=shots_dir,
         out_dir=out_dir,
+        buffer_days=args.buffer_days,
     )
