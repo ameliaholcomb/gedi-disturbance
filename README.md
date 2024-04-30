@@ -1,4 +1,4 @@
-# Measuring small-scale tropical forest disturbance with GEDI
+# Measuring the effects of tropical forest disturbance with GEDI
 [![Hippocratic License HL3-ECO-EXTR-FFD-MIL-SV](https://img.shields.io/static/v1?label=Hippocratic%20License&message=HL3-ECO-EXTR-FFD-MIL-SV&labelColor=5e2751&color=bc8c3d)](https://firstdonoharm.dev/version/3/0/eco-extr-ffd-mil-sv.html)
  <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
@@ -11,12 +11,14 @@
 
 This repository contains the code required to reproduce the results and figures
 for the paper "Repeat GEDI footprints enable the measurement of moderate-scale tropical forest disturbance."
+This repository may continue to receive code updates and efficiency improvements,
+but the version used for the paper is tagged with \<publication-freeze\>
 
 ### Data sources
 1. GEDI Level 2A, Level 2B, and Level 4A.
 
-    These data products are available from the ORNL and LP DAACs. The codebase
-    assumes that this data is already downloaded and the individual shots are 
+    These data products are available from the ORNL and LP DAACs. This repository
+    assumes that the data is already downloaded and filtered with the shots
     loaded into a PostGIS database. Please contact the corresponding authors
     if assistance is needed with this step. Alternatively, if given an existing
     dataset of coincident shots, the later pipelines can be run without PostGIS
@@ -32,22 +34,33 @@ for the paper "Repeat GEDI footprints enable the measurement of moderate-scale t
     JRC website and the intensity metrics are downloaded from Google Earth Engine.
     However, you may need to adjust these regular expressions to match your files.
 
-3. RADD disturbance maps ("radd_alert_latest_v2023-04-16")
+3. GLAD disturbance maps ("v20231206")
 
-    These rasters are available from Google Earth Engine. Once again, you may
-    need to adjust file name conventions enforced in radd_parser.py to match your files.
+    These rasters are available from https://glad.umd.edu/dataset/glad-forest-alerts.
+    They must be preprocessed to reformat the data and remove plantation forests
+    according to the basemap available from 
+    https://console.cloud.google.com/storage/browser/earthenginepartners-hansen/S2alert/forestMask.
+    This step can be performed using the script in src/data/glad_preprocessor.py.
 
 ### Setup
 In addition to setting up the data as described above, set up the environment as follows:
-1. Modify constants.py to contain local directory information
-2. Create a file called '.env' in the main repo directory with the following structure:
+Create a file called '.env' in the main repo directory with the following structure:
 ```python
 # User path constants
 USER_PATH="/home/<user>"
 DATA_PATH="/path/to/data"
 RESULTS_PATH="/path/for/results"
 
-# Database constants
+# Raster data locations
+# Specify data location as a subdirectory of the DATA_PATH given above.
+# e.g. if the AFC data is saved in "/path/to/data/AFC/v1_2022",
+# AFC_SUBDIR should be set to the string "AFC/v1_2022"
+AFC_SUBDIR = "AFC/v1_2022"
+GLAD_SUBDIR = "GLAD"
+# Non-plantation mask for the GLAD data
+GLAD_BASEMAP_SUBDIR = "GLADS2/forest_mask"
+
+# GEDI database constants
 DB_HOST="<hostname>"
 DB_NAME="<db name>"
 DB_USER="<db user>"
