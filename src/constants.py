@@ -9,15 +9,6 @@ import dotenv
 dotenv.load_dotenv()
 
 
-class GediProduct(Enum):
-    L1B = "level1B"
-    L2A = "level2A"
-    L2B = "level2B"
-    L3 = "level3"
-    L4A = "level4A"
-    L4B = "level4B"
-
-
 # ---------------- PATH CONSTANTS -------------------
 #  Source folder path
 constants_path = Path(__file__)
@@ -25,26 +16,14 @@ SRC_PATH = constants_path.parent
 PROJECT_PATH = SRC_PATH.parent
 SECRETS_PATH = PROJECT_PATH / "secrets"
 
-# Log related paths
-LOG_PATH = PROJECT_PATH / "logs"
-LOG_PATH.mkdir(parents=True, exist_ok=True)
-
 #  Data related paths
 DATA_PATH = Path(os.getenv("DATA_PATH"))
 RESULTS_PATH = Path(os.getenv("RESULTS_PATH"))
 USER_PATH = Path(os.getenv("USER_PATH"))
-GEDI_PATH = DATA_PATH / "GEDI"
 
-
-def gedi_product_path(product):
-    return GEDI_PATH / product.value
-
-
-GEDI_L1B_PATH = gedi_product_path(GediProduct.L1B)
-GEDI_L2A_PATH = gedi_product_path(GediProduct.L2A)
-GEDI_L4A_PATH = gedi_product_path(GediProduct.L4A)
-JRC_PATH = DATA_PATH / "JRC" / "v1_2022"
-RADD_PATH = DATA_PATH / "RADD"
+JRC_PATH = DATA_PATH / os.getenv("AFC_SUBDIR")
+GLAD_PATH = DATA_PATH / os.getenv("GLAD_SUBDIR")
+BASEMAP_DIR = DATA_PATH / os.getenv("GLAD_BASEMAP_SUBDIR")
 
 # ---------------- API KEYS -------------------------
 
