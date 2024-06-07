@@ -10,7 +10,8 @@
 ## Getting started
 
 This repository contains the code required to reproduce the results and figures
-for the paper "Repeat GEDI footprints enable the measurement of moderate-scale tropical forest disturbance."
+for the paper "Repeat GEDI footprints measure the effects of tropical forest disturbances."
+(https://doi.org/10.1016/j.rse.2024.114174)
 This repository may continue to receive code updates and efficiency improvements,
 but the version used for the paper is tagged with \<publication-freeze\>
 
@@ -75,12 +76,12 @@ pip install -e /path/to/repo
 This codebase contains four processing pipelines used to generate the data for
 the paper.
 
-1. find_coincident_shots.py: Find coincident shot pairs (< 40 m apart) for a given region.
-2. jrc_degradation_pipeline.py: Identify coincident shot pairs that overlap with disturbance events in the AFC dataset.
-3. glad_degradation_pipeline.py: Identify coincident shot pairs that overlap with disturbance events in the GLAD dataset.
+1. find_coincident_shots.py: Find nearby shot pairs (< 40 m apart) for a given region.
+2. jrc_degradation_pipeline.py: Identify nearby shot pairs that overlap with disturbance events in the AFC dataset.
+3. glad_degradation_pipeline.py: Identify nearby shot pairs that overlap with disturbance events in the GLAD dataset.
 4. jrc_disturb_intensity_pipeline.py: For a set of AFC-detected disturbance events, get the corresponding disturbance intensity.
 
-Additionally, it includes a pipeline for identifying coincident shot pairs that fall in "intact" forest. This is only used in the supplementary analysis (not the main paper).
+Additionally, it includes a pipeline for identifying shot pairs that fall in "intact" forest. This is only used in the supplementary analysis (not the main paper).
 
 ## Project Organization
 ```
